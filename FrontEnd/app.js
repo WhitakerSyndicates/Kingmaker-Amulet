@@ -1,28 +1,60 @@
-// Wait until the DOM is fully loaded
-document.addEventListener("DOMContentLoaded", function () {
-  
-// Dummy data for demonstration; replace these with actual values from your blockchain
-  const currentKing = "0x1234...abcd";
-  const kingOfTime = "0xabcd...1234";
-  const totalHeld = "365 days";
-  const kingOfUsurpers = "0x5678...efgh";
-  const claimCount = 42;
-  const currentPrice = "1 ETH";
+document.addEventListener("DOMContentLoaded", async function () {
+  // Check if MetaMask is installed
+  if (typeof window.ethereum !== "undefined") {
+    try {
+      // Request account access from MetaMask
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      
+      // Create a provider and signer using ethers.js (using ethers v5 here)
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
 
-  
-// Update the page with fetched data
-  document.getElementById("currentKing").textContent = currentKing;
-  document.getElementById("kingOfTime").textContent = kingOfTime;
-  document.getElementById("totalHeld").textContent = totalHeld;
-  document.getElementById("kingOfUsurpers").textContent = kingOfUsurpers;
-  document.getElementById("claimCount").textContent = claimCount;
-  document.getElementById("currentPrice").textContent = "Current Price: " + currentPrice;
+      // Set your NFT contract's address and ABI (we use a minimal ABI for our example)
+      const contractAddress = "0xf055A45C6e0158805c4c02227de8D152f3CdF551";
+      const contractABI = [
+        // These are the functions we'll interact with:
+        "function currentPrice() view returns (uint256)",
+        "function currentKing() view returns (address)",
+        "function buy() payable"
+        // You can add more functions here if needed (e.g., kingOfTime(), kingOfUsurpers(), etc.)
+      ];
 
-  
-// Set up the event listener for the claim button
-  document.getElementById("claimButton").addEventListener("click", function () {
-    alert("Claiming the amulet if you dare! This will trigger a blockchain transaction.");
-    // TODO: Replace with your smart contract interaction code.
-    // claimAmulet();
-  });
+      // Create an instance of your contract
+      const contract = new ethers.Contract(contractAddress, contractABI, signer);
+
+      // Fetch data from the contract
+      const priceRaw = await contract.currentPrice();
+      // Format the price from Wei to ETH
+      const currentPrice = ethers.utils.formatEther(priceRaw);
+      document.getElementById("currentPrice").textContent =
+        "Current Price: " + currentPrice + " ETH";
+      
+      const currentKing = await contract.currentKing();
+      document.getElementById("currentKing").textContent = currentKing;
+
+      // Set up the claim button event listener to trigger the buy() function
+      document.getElementById("claimButton").addEventListener("click", async function () {
+        try {
+          // Call the buy() method with the appropriate ETH value
+          const tx = await contract.buy({ value: priceRaw });
+          await tx.wait(); // Wait for the transaction to be mined
+          alert("NFT claimed successfully!");
+          // Optionally, re-fetch updated data to reflect any changes
+          const updatedPriceRaw = await contract.currentPrice();
+          const updatedPrice = ethers.utils.formatEther(updatedPriceRaw);
+          document.getElementById("currentPrice").textContent = "Current Price: " + updatedPrice + " ETH";
+          const updatedCurrentKing = await contract.currentKing();
+          document.getElementById("currentKing").textContent = updatedCurrentKing;
+        } catch (error) {
+          console.error("Transaction failed:", error);
+          alert("Transaction failed. Check the console for details.");
+        }
+      });
+    } catch (error) {
+      console.error("Error connecting to MetaMask:", error);
+      alert("Error connecting to MetaMask. Please make sure MetaMask is installed and try again.");
+    }
+  } else {
+    alert("Please install MetaMask to interact with this NFT.");
+  }
 });
