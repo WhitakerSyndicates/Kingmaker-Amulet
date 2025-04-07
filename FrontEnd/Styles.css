@@ -1,0 +1,113 @@
+:root {
+  --primary-color: #FFD700;         /* Gold for headings and title */
+  --button-color: #8B0000;            /* Dark red for claim button */
+  --button-hover: #a80000;            /* Lighter red on hover */
+  --overlay-color: rgba(0, 0, 0, 0.7); /* Semi-transparent overlay for boxes */
+  --text-color: #ffffff;              /* White text */
+}
+
+body {
+  /* Background remains using the amulet image as set earlier */
+  background: url('assets/amulet-logo.png') no-repeat center center fixed;
+  background-size: cover;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: var(--text-color);
+  text-align: center;
+}
+
+/* Header styles */
+header {
+  padding: 1em;
+}
+
+/* Site title styling */
+#siteTitle {
+  font-size: 3em;
+  font-weight: bold;
+  margin: 0.5em 0;
+  color: var(--primary-color);
+}
+
+/* Price box styling */
+#priceBox {
+  background: rgba(0, 0, 0, 0.7);
+  display: inline-block;
+  padding: 0.5em 1em;
+  border-radius: 5px;
+  margin: 0.5em 0;
+}
+
+#priceBox p {
+  font-size: 1.5em;
+  margin: 0;
+  color: var(--primary-color);
+}
+
+/* Claim button styles */
+#claimButton {
+  background-color: var(--button-color);
+  color: #fff;
+  padding: 0.8em 1.2em;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  margin: 1em auto;
+  display: block;
+}
+
+#claimButton:hover {
+  background-color: var(--button-hover);
+}
+
+/* Section box styling (for all sections) */
+section {
+  margin: 1em auto;
+  max-width: 800px;
+  padding: 1em;
+  background: var(--overlay-color);
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* Specific styles for individual sections with adjusted opaqueness */
+#currentKingSection {
+  background-color: rgba(24, 188, 156, 0.5); /* More opaque teal tint */
+}
+
+#kingOfTimeSection {
+  background-color: rgba(231, 76, 60, 0.5);   /* More opaque red/orange tint */
+}
+
+#kingOfUsurpersSection {
+  background-color: rgba(44, 62, 80, 0.5);     /* More opaque dark blue-gray tint */
+}
+
+/* Narrative Section with a subtle gradient background */
+#narrativeSection {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6));
+  padding: 1em;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Extra spacing for paragraphs in narrative and legal sections */
+#narrativeSection p,
+#legalSection p {
+  margin-bottom: 1.5em;
+  line-height: 1.6;
+}
+
+/* Legal Information Section styling remains unchanged */
+#legalSection {
+  /* Additional styles for legal section if needed */
+}
+
+/* Footer styling */
+footer {
+  font-size: 0.9em;
+  color: var(--text-color);
+  padding: 1em;
+}

@@ -128,6 +128,20 @@ dist
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
+# Node modules (installed dependencies)
+node_modules/
+
+# Build artifacts and caches from Hardhat
+artifacts/
+cache/
+
+# Environment files with sensitive data
+.env
+
+# Ignore cache and ignition folders
+cache/
+ignition/
+
 # yarn v2
 .yarn/cache
 .yarn/unplugged
