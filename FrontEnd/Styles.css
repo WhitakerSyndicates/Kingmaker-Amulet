@@ -84,6 +84,17 @@ header {
   text-align: center;
 }
 
+/* New: Contract Information Section styling */
+#contractInfo {
+  margin: 1em auto;
+  max-width: 800px;
+  padding: 1em;
+  background: var(--overlay-color);
+  border-radius: 5px;
+  text-align: center;
+  font-size: 1.1em;
+}
+
 /* Narrative Section with gradient background */
 #narrativeSection {
   background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6));
