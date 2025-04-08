@@ -1,0 +1,28 @@
+{
+  "name": "Kingmaker Amulet #1",
+  "description": "The Kingmaker Amulet is a legendary token that challenges its owner to prove their worth in the realm of cryptocurrency. Starting at 0.001 ETH, the price increases by 10% with each new claim. This sacred artifact symbolizes power, ambition, and the dynamic nature of value on the blockchain.",
+  "image": "https://WhitakerSyndicates.github.io/Kingmaker-Amulet/metadata/images/amulet-image.png",
+  "external_url": "https://kingmakeramulet.com",
+  "attributes": [
+    {
+      "trait_type": "Starting Price",
+      "value": "0.001 ETH"
+    },
+    {
+      "trait_type": "Price Multiplier",
+      "value": "110% per claim"
+    },
+    {
+      "trait_type": "Seller Payout",
+      "value": "101% of previous price"
+    },
+    {
+      "trait_type": "Ownership",
+      "value": "Unique"
+    },
+    {
+      "trait_type": "Network",
+      "value": "Base Mainnet"
+    }
+  ]
+}

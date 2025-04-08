@@ -5,7 +5,8 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract KingmakerAmulet is ERC721URIStorage, Ownable {
-    uint256 public constant INITIAL_PRICE = 1 ether;
+    // Updated starting price to 0.001 ether.
+    uint256 public constant INITIAL_PRICE = 0.001 ether;
     uint256 public constant PRICE_MULTIPLIER = 110; // 110% of last price
     uint256 public constant SELLER_PAYOUT = 101;    // 101% to previous owner
 
@@ -30,17 +31,20 @@ contract KingmakerAmulet is ERC721URIStorage, Ownable {
     mapping(address => uint256) public totalHeldTime;
 
     constructor() ERC721("The Kingmaker Amulet", "AMULET") Ownable(msg.sender) {
-    maker = msg.sender;
-    _mint(maker, amuletTokenId);
-    currentKing = maker;
-    currentPrice = INITIAL_PRICE;
-    lastTransferTimestamp = block.timestamp;
-    currentHoldStart = block.timestamp;
-}
+        maker = msg.sender;
+        _mint(maker, amuletTokenId);
+        // Set the token URI to point to your hosted metadata JSON file.
+        _setTokenURI(amuletTokenId, "https://WhitakerSyndicates.github.io/Kingmaker-Amulet/metadata/1.json");
+        currentKing = maker;
+        currentPrice = INITIAL_PRICE;
+        lastTransferTimestamp = block.timestamp;
+        currentHoldStart = block.timestamp;
+    }
 
     function buy() external payable {
         require(msg.value >= currentPrice, "Insufficient payment.");
 
+        // If 365 days have passed with no new claim, trigger a reset mechanism.
         if (block.timestamp - lastTransferTimestamp >= 365 days) {
             _triggerRebirth();
         }
@@ -74,7 +78,6 @@ contract KingmakerAmulet is ERC721URIStorage, Ownable {
     function _distributeFees(uint256 feePool) internal {
         uint256 exileCount = kingsInExile.length;
         uint256 councilSize = 3 + exileCount;
-
         if (councilSize > 7) councilSize = 7;
 
         uint256 councilPortion;
@@ -107,7 +110,6 @@ contract KingmakerAmulet is ERC721URIStorage, Ownable {
 
     function _triggerRebirth() internal {
         address exile = currentKing;
-
         if (kingsInExile.length >= 4) {
             kingEternals.push(kingsInExile[0]);
             for (uint256 i = 0; i < 3; i++) {
@@ -117,7 +119,6 @@ contract KingmakerAmulet is ERC721URIStorage, Ownable {
         } else {
             kingsInExile.push(exile);
         }
-
         currentPrice = INITIAL_PRICE;
     }
 

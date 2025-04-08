@@ -1,89 +1,90 @@
 document.addEventListener("DOMContentLoaded", async function () {
-  // Utility function to mask addresses: show the first 6 and last 4 characters (e.g., 0x1234...abcd)
+  // Utility function: mask long addresses to show the first 6 and the last 4 characters
   function maskAddress(address) {
-    if (!address) return address;
-    return address.slice(0, 6) + "..." + address.slice(-4);
+    return address ? address.slice(0, 6) + "..." + address.slice(-4) : "";
   }
-  
+
   // Check if MetaMask is installed
   if (typeof window.ethereum !== "undefined") {
     try {
-      console.log("MetaMask is available.");
-      // Request user accounts from MetaMask
+      // Request account access from MetaMask
       await window.ethereum.request({ method: "eth_requestAccounts" });
-      
-      // Create a provider and signer from MetaMask using ethers.js
+      console.log("MetaMask is connected.");
+
+      // Create a provider and signer using ethers.js (v5 UMD is loaded in index.html)
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
 
-      // Contract details
-      const contractAddress = "0xf055A45C6e0158805c4c02227de8D152f3CdF551";
+      // Set your contract address (verified one)
+      const contractAddress = "0x2159c1D73619595D0BDA4408296E87D0C377D683";
+      
+      // Define the contract ABI (ensure this is current)
       const contractABI = [
-        // Minimal ABI for our calls
         "function currentPrice() view returns (uint256)",
         "function currentKing() view returns (address)",
         "function kingOfTime() view returns (address)",
         "function kingOfUsurpers() view returns (address)",
         "function totalHeldTime(address) view returns (uint256)",
         "function claimCounts(address) view returns (uint256)",
-        "function buy() payable"
+        "function buy() payable",
+        "function tokenURI(uint256) view returns (string)"
       ];
 
-      // Instantiate the contract
+      // Create a contract instance with the verified address and ABI
       const contract = new ethers.Contract(contractAddress, contractABI, signer);
-      console.log("Contract instance created:", contract);
+      console.log("Contract instance created.");
 
-      // Fetch current price from the contract
+      // Fetch the current price and current king from the contract
       const priceRaw = await contract.currentPrice();
-      const currentPriceFormatted = ethers.utils.formatEther(priceRaw);
-      document.getElementById("currentPrice").textContent =
-        "Current Price: " + currentPriceFormatted + " ETH";
-
-      // Fetch current king and mask the address
+      const currentPrice = ethers.utils.formatEther(priceRaw);
+      document.getElementById("currentPrice").textContent = 
+        "Current Price: " + currentPrice + " ETH";
+      
       const currentKing = await contract.currentKing();
       document.getElementById("currentKing").textContent = maskAddress(currentKing);
 
-      // Fetch King of Time data and the corresponding total held time  
+      // Fetch additional data if desired:
       const kingTime = await contract.kingOfTime();
       document.getElementById("kingOfTime").textContent = maskAddress(kingTime);
-      // totalHeldTime is a mapping; we pass the king's address
       const totalTimeRaw = await contract.totalHeldTime(kingTime);
-      // Here we assume the returned value is in seconds; convert to string (or format as needed)
       document.getElementById("totalHeld").textContent = totalTimeRaw.toString() + " sec";
 
-      // Fetch King of Usurpers and the number of claims
       const kingUsurpers = await contract.kingOfUsurpers();
       document.getElementById("kingOfUsurpers").textContent = maskAddress(kingUsurpers);
       const claimCount = await contract.claimCounts(kingUsurpers);
       document.getElementById("claimCount").textContent = claimCount.toString();
 
-      // Set up the claim button event listener
+      // (Optional) Fetch token metadata if you want to display more info:
+      const tokenUri = await contract.tokenURI(1);
+      console.log("Token URI:", tokenUri);
+      // You can then fetch the metadata from tokenUri as follows:
+      // let metadataResponse = await fetch(tokenUri);
+      // let metadata = await metadataResponse.json();
+      // Update your DOM with metadata info if desired.
+
+      // Set up the claim button to call the buy() function on the contract
       document.getElementById("claimButton").addEventListener("click", async function () {
         try {
-          // When the user clicks the claim button, MetaMask will open a prompt
-          // asking them to confirm the transaction.
-          // The buy() function is called with the value set to the current price.
+          // Send a transaction to buy the NFT by passing the current price value
           const tx = await contract.buy({ value: priceRaw });
-          console.log("Transaction submitted. Tx hash:", tx.hash);
-          // Wait for the transaction to be confirmed (mined)
+          console.log("Transaction submitted. Hash:", tx.hash);
           await tx.wait();
           alert("Transaction successful!");
 
-          // Optionally, update the current price and king data after a successful transaction
+          // Optionally, refresh data after the transaction
           const newPriceRaw = await contract.currentPrice();
-          const newPriceFormatted = ethers.utils.formatEther(newPriceRaw);
-          document.getElementById("currentPrice").textContent = "Current Price: " + newPriceFormatted + " ETH";
+          const newPrice = ethers.utils.formatEther(newPriceRaw);
+          document.getElementById("currentPrice").textContent = "Current Price: " + newPrice + " ETH";
           const newCurrentKing = await contract.currentKing();
           document.getElementById("currentKing").textContent = maskAddress(newCurrentKing);
         } catch (error) {
           console.error("Transaction failed:", error);
-          alert("Transaction failed. Check console for details.");
+          alert("Transaction failed. Check the console for details.");
         }
       });
-
     } catch (error) {
       console.error("Error connecting to MetaMask:", error);
-      alert("Error connecting to MetaMask. Please ensure it is installed and try again.");
+      alert("Error connecting to MetaMask. Make sure it is installed and try again.");
     }
   } else {
     alert("Please install MetaMask to interact with this NFT.");
