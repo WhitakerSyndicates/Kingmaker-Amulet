@@ -4,8 +4,11 @@
   --button-hover: #a80000;            /* Lighter red on hover */
   --overlay-color: rgba(0, 0, 0, 0.7); /* Semi-transparent overlay for boxes */
   --text-color: #ffffff;              /* White text */
+  --popup-bg: rgba(0, 0, 0, 0.9);      /* Dark background for popup */
+  --popup-text: #FFD700;              /* Popup text in gold */
 }
 
+/* Global body styles */
 body {
   /* Background remains using the amulet image as set earlier */
   background: url('assets/amulet-logo.png') no-repeat center center fixed;
@@ -62,30 +65,26 @@ header {
   background-color: var(--button-hover);
 }
 
-/* Section box styling (for all sections) */
-section {
+/* New: Horizontal container for king info boxes */
+#kingsContainer {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+  flex-wrap: wrap; /* so that boxes can wrap on smaller screens */
   margin: 1em auto;
   max-width: 800px;
-  padding: 1em;
+}
+
+/* Reuse section box styling for individual king info boxes */
+.king-box {
+  flex: 1 1 250px; /* minimum width 250px, and grow */
   background: var(--overlay-color);
+  padding: 1em;
   border-radius: 5px;
   text-align: center;
 }
 
-/* Specific styles for individual sections with adjusted opaqueness */
-#currentKingSection {
-  background-color: rgba(24, 188, 156, 0.5); /* More opaque teal tint */
-}
-
-#kingOfTimeSection {
-  background-color: rgba(231, 76, 60, 0.5);   /* More opaque red/orange tint */
-}
-
-#kingOfUsurpersSection {
-  background-color: rgba(44, 62, 80, 0.5);     /* More opaque dark blue-gray tint */
-}
-
-/* Narrative Section with a subtle gradient background */
+/* Narrative Section with gradient background */
 #narrativeSection {
   background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6));
   padding: 1em;
@@ -100,7 +99,7 @@ section {
   line-height: 1.6;
 }
 
-/* Legal Information Section styling remains unchanged */
+/* Legal Information Section styling */
 #legalSection {
   /* Additional styles for legal section if needed */
 }
@@ -110,4 +109,52 @@ footer {
   font-size: 0.9em;
   color: var(--text-color);
   padding: 1em;
+}
+
+/* New: Style for the popup overlay */
+#popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--popup-bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* on top of everything */
+  padding: 1em;
+}
+
+#popupOverlay .popup-content {
+  background: rgba(0, 0, 0, 0.85);
+  padding: 2em;
+  border-radius: 10px;
+  max-width: 600px;
+  text-align: left;
+  color: var(--popup-text);
+}
+
+#popupOverlay button {
+  margin-top: 1em;
+  padding: 0.5em 1em;
+  background-color: var(--button-color);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+#popupOverlay button:hover {
+  background-color: var(--button-hover);
+}
+
+/* New: Style for external links (market links, BaseScan, contract address) */
+.external-links a {
+  color: var(--primary-color);
+  text-decoration: underline;
+  margin: 0 0.5em;
+  font-weight: bold;
 }

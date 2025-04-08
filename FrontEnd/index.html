@@ -9,6 +9,22 @@
   <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 </head>
 <body>
+  <!-- Popup overlay for onboarding instructions -->
+  <div id="popupOverlay">
+    <div class="popup-content">
+      <h2>Welcome to the Kingmaker Amulet</h2>
+      <p>To fully use this site, please complete the following steps:</p>
+      <ol>
+        <li>Install an Ethereum wallet like <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">MetaMask</a>.</li>
+        <li>Create an account and securely save your private keys.</li>
+        <li>Switch your wallet to Base Mainnet.</li>
+        <li>Connect your wallet by clicking the "Claim the Amulet" button.</li>
+      </ol>
+      <p>Follow the on-screen prompts to complete each quest. Enjoy your journey in becoming the King of Cryptocurrency!</p>
+      <button id="closePopup">Got It!</button>
+    </div>
+  </div>
+  
   <header>
     <!-- Site Title -->
     <h1 id="siteTitle">The Kingmaker Amulet</h1>
@@ -21,25 +37,28 @@
   </header>
 
   <main>
-    <!-- Current King Section -->
-    <section id="currentKingSection">
-      <h2>Current King</h2>
-      <p id="currentKing">Loading...</p>
-    </section>
+    <!-- Horizontal container for king info boxes -->
+    <div id="kingsContainer">
+      <!-- Current King Section -->
+      <section id="currentKingSection" class="king-box">
+        <h2>Current King</h2>
+        <p id="currentKing">Loading...</p>
+      </section>
 
-    <!-- King of Time Section -->
-    <section id="kingOfTimeSection">
-      <h2>King of Time</h2>
-      <p id="kingOfTime">Loading...</p>
-      <p>Total held time: <span id="totalHeld">Loading...</span></p>
-    </section>
+      <!-- King of Time Section -->
+      <section id="kingOfTimeSection" class="king-box">
+        <h2>King of Time</h2>
+        <p id="kingOfTime">Loading...</p>
+        <p>Total held time: <span id="totalHeld">Loading...</span></p>
+      </section>
 
-    <!-- King of Usurpers Section -->
-    <section id="kingOfUsurpersSection">
-      <h2>King of Usurpers</h2>
-      <p id="kingOfUsurpers">Loading...</p>
-      <p>Number of claims: <span id="claimCount">Loading...</span></p>
-    </section>
+      <!-- King of Usurpers Section -->
+      <section id="kingOfUsurpersSection" class="king-box">
+        <h2>King of Usurpers</h2>
+        <p id="kingOfUsurpers">Loading...</p>
+        <p>Number of claims: <span id="claimCount">Loading...</span></p>
+      </section>
+    </div>
 
     <!-- Narrative Section -->
     <section id="narrativeSection">
@@ -86,8 +105,20 @@
 
   <footer>
     <p>&copy; 2025 Kingmaker Amulet. All rights reserved.</p>
+    <p>Contract ID: 0x2159c1D73619595D0BDA4408296E87D0C377D683</p>
+    <div class="external-links">
+      <a href="https://basescan.org/address/0x2159c1D73619595D0BDA4408296E87D0C377D683" target="_blank" rel="noopener noreferrer">View Contract on BaseScan</a>
+      |
+      <a href="https://opensea.io/collection/the-kingmaker-amulet-3" target="_blank" rel="noopener noreferrer">View Collection on OpenSea</a>
+    </div>
   </footer>
 
   <script src="app.js"></script>
+  <script>
+    // Simple script to close the popup when the "Got It!" button is clicked
+    document.getElementById('closePopup').addEventListener('click', function() {
+      document.getElementById('popupOverlay').style.display = 'none';
+    });
+  </script>
 </body>
 </html>
