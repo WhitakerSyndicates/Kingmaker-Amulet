@@ -2,7 +2,7 @@
   "name": "Kingmaker Amulet #1",
   "description": "The Kingmaker Amulet is a unique, legendary NFT that serves as the ultimate symbol for the King of Cryptocurrency. This one-of-a-kind token can only be held by one individual at any given time, and its ownership status identifies the reigning King of Cryptocurrency. Priced initially at 0.001 ETH, every sale increases the price by 10%. The owner cannot initiate a sale themselves; the Amulet can only be claimed by someone else willing to pay the increased price. Additionally, if 365 days pass without a sale, the price reverts to the original starting price, resetting the challenge. This dynamic pricing mechanism, combined with the exclusive nature of the Amulet, creates a continuously evolving asset on Base Mainnet.",
   "image": "https://whitakersyndicates.github.io/Kingmaker-Amulet/metadata/images/amulet-logo.png",
-  "external_url": "https://whitakersyndicates.github.io/Kingmaker-Amulet/",
+  "external_url": "https://kingmakeramulet.com",
   "attributes": [
     {
       "trait_type": "Starting Price",
